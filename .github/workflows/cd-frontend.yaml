@@ -22,8 +22,8 @@ jobs:
         with:
           context: .
           file: ./docker/Dockerfile.frontend
-          build-args:
-            DATABASE_URL: ${{ secrets.DATABASE_URL }}
-            DIRECT_URL: ${{ secrets.DIRECT_URL }}
+          build-args: |
+            DATABASE_URL=${{ secrets.DATABASE_URL }}
+            DIRECT_URL=${{ secrets.DIRECT_URL }}
           push: true
           tags: rudrasankha/user-frontend:${{ github.sha }}
