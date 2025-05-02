@@ -8,7 +8,7 @@ app.get("/", (req, res) => {
 
 app.get("/users", async (req, res) => {
   const users = await db.user.findMany();
-  res.json(users);
+  res.json({ users });
 });
 
 app.post("/users", async (req, res) => {
