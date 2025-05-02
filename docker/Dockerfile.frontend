@@ -3,6 +3,8 @@ FROM oven/bun:1
 WORKDIR /usr/src/app
 
 ARG DATABASE_URL
+ARG DIRECT_URL
+
 COPY ./packages ./packages
 COPY ./bun.lock ./bun.lock
 
@@ -13,7 +15,7 @@ COPY ./apps/docs ./apps/docs
 
 RUN bun install
 RUN bun run prisma:generate
-RUN DATABASE_URL=${DATABASE_URL} bun run build:frontend
+RUN DATABASE_URL=${DATABASE_URL} DIRECT_URL=${DIRECT_URL} bun run build:frontend
 
 EXPOSE 3000
 
