@@ -1,12 +1,13 @@
-name : Deploy the http backend
+name: Deploy the http backend
 
 on:
   push:
     branches: [ main ]
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -24,3 +25,15 @@ jobs:
           file: ./docker/Dockerfile.backend
           push: true
           tags: rudrasankha/user-backend:${{ github.sha }}
+
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            docker pull rudrasankha/user-backend:${{ github.sha }}
+            docker stop user-backend || true
+            docker rm user-backend || true
+            docker run -d --name user-backend -p 8080:8080 rudrasankha/user-backend:${{ github.sha }}

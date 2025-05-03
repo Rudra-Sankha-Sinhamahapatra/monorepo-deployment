@@ -6,6 +6,10 @@ app.get("/", (req, res) => {
   res.json({ message: "Hello World" });
 });
 
+app.get("/test", (req, res) => {
+  res.json({ message: "Test Route" });
+});
+
 app.get("/users", async (req, res) => {
   const users = await db.user.findMany();
   res.json({ users });
