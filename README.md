@@ -1,3 +1,30 @@
+# Add these Secrets to Github Secrets 
+
+# GitHub Secrets Configuration
+
+The following secrets need to be added to your GitHub repository for the CI/CD workflows to function properly:
+
+## Database Secrets
+- `DATABASE_URL`: Connection string for the PostgreSQL database with pgbouncer (used for connection pooling)
+  - Format: `postgresql://[username]:[password]@[host]:[port]/[database]?pgbouncer=true`
+
+- `DIRECT_URL`: Direct connection string for PostgreSQL database (bypasses pgbouncer)
+  - Format: `postgresql://[username]:[password]@[host]:[port]/[database]`
+
+## Docker Hub Secrets
+- `DOCKER_USERNAME`: Your Docker Hub username for pushing container images
+- `DOCKER_PASSWORD`: Your Docker Hub password or access token
+
+## AWS EC2 Deployment Secrets
+- `EC2_HOST`: The public IP address or hostname of your EC2 instance (your ipv4 dns address ex: 10.12.20.35)
+- `EC2_USER`: SSH username for your EC2 instance (typically "ec2-user" for Amazon Linux or "ubuntu" for Ubuntu)
+- `EC2_SSH_KEY`: Your private SSH key for authentication to the EC2 instance (.pem file)
+
+## Adding Secrets
+1. Go to your GitHub repository
+2. Navigate to Settings > Secrets and variables > Actions
+3. Click "New repository secret" and add each of the secrets above
+
 # Turborepo starter
 
 This Turborepo starter is maintained by the Turborepo core team.

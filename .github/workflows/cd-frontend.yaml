@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -27,3 +27,15 @@ jobs:
             DIRECT_URL=${{ secrets.DIRECT_URL }}
           push: true
           tags: rudrasankha/user-frontend:${{ github.sha }}
+
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: | 
+            docker pull rudrasankha/user-frontend:${{ github.sha }}
+            docker stop user-frontend || true
+            docker rm user-frontend || true
+            docker run -d --name user-frontend -p 3000:3000 rudrasankha/user-frontend:${{ github.sha }}
